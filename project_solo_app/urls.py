@@ -2,24 +2,17 @@ from django.urls import include, path
 from . import views
 
 urlpatterns = [
-    # Create
-    path('create', views.create),
-    # Read
     path('', views.index),
-    # Read
-    # Read
     path('signin', views.signin),
-    # Read
-    path('read', views.read),
-    # Update
-    path('sample_level_1/<int:sample_id>', views.update),
-    # Delete
-    path('sample_level_1/delete/<int:sample_id>', views.delete),
+    path('signout', views.signout),
+    
+    path('words', views.words),
+    path('words/<str:action>', views.words),
+    path('words/<str:action>/<int:word_id>', views.words),
 
-    # Sample for string usage in route.
-    # path('sample_level_1/<str:sample_string>', views.string_sample),
-
-    # Update
-    # Sample for string usage in route.
-    # path('sample_level_1/<str:sample_string>', views.string_sample),
+    #background task base
+    path('definition-harvest', views.definition_harvest),
+    path('job-harvest', views.job_harvest),
+    path('word-collect', views.word_collect),
+    path('test-wait/<int:wait>', views.test_wait),
 ]

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset='utf-8'>
+        <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+        <title>Edit</title>
+        <meta name='viewport' content='width=device-width, initial-scale=1'>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+        {% load static %}
+        <link rel="stylesheet" href="{% static 'css/style.css' %}?{% now 'U' %}">
+    </head>
+    <body>
+
+        <p value="------------- section to show the header area with log off and refresh buttons -------------"></p>
+
+        <div class="container py-3 justify-content-center">
+            <div class="row">
+                <div class="col-4 my-auto">
+                    <h2>Definition Harvest</h2>
+                </div>
+                <div class="col-8 my-auto text-right">
+                    <a class="btn btn-light btn-sm" href="/words">Defined Words</a> |
+                    <a class="btn btn-light btn-sm" href="/words/inc-exc">Words (include/exclude)</a> |
+                    <a class="btn btn-dark btn-sm" href="/words/def-harvest">Refresh Definition harvest</a> |
+                    <a class="btn btn-light btn-sm" href="/words/job-harvest">Job harvest</a> |
+                    <a class="btn btn-warning btn-sm" href="/signout">log out</a>
+                </div>
+            </div>
+    
+            <hr class="solid">
+    
+            <p value="------------- section to show flash messages, if there are any errors -------------"></p>
+    
+            {% if messages %}
+                <div class="container text-danger">
+                    <br>
+                    <h3>Please, address the following to proceed.</h3>
+                    <ul class="messages">
+                        {% for message in messages %}
+                            <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>   
+                        {% endfor %}
+                    </ul>
+                    <br>
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="container justify-content-center">
+
+            <p value="------------- section to show table for all Posted Quotes -------------"></p>
+
+        <div class="row">
+            <div class="col-8">
+                <div class="container py-3 justify-content-center">
+                    <h4 class="text-center">Viewing relevant words: {{relevant_page}} thru {{relevant_page_end}} of {{ relevant_count }}</h4>
+                    <hr>
+                    {% if relevant_words %}
+                        <div class="table-responsive">
+                            <table class="table table-striped table-fixed">
+                                <tbody>
+                                    {% for word in relevant_words %}
+                                        <tr>
+                                            <td class="col-12">
+                                                <div class="row">
+                                                    <div class="col-5 my-auto">
+                                                        <h5>{{ word.word }}</h5>
+                                                    </div>
+                                                    <div class="col-7 my-auto text-right">
+                                                        <div class="btn-group" role="group">
+                                                            <form action="/words/definitions/{{ word.id }}" method="post">
+                                                                {% csrf_token %}
+                                                                <button class="btn btn-info btn-sm">Definitions</button>
+                                                            </form>
+                                                            <form action="/definition-harvest" method="post">
+                                                                <input id="word_id" name="word_id" type="hidden" value="{{ word.id }}">
+                                                                {% csrf_token %}
+                                                                <button class="btn btn-primary btn-sm">Definition Harvest</button>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% endif %}
+                    <hr>
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item"><a class="page-link" href="/words/relevant_top">&laquo;</a></li>
+                        <li class="page-item"><a class="page-link" href="/words/relevant_previous">previous</a></li>
+                        <li class="page-item"><a class="page-link" href="/words/relevant_next">next</a></li>
+                        <li class="page-item"><a class="page-link" href="/words/relevant_bottom">&raquo;</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
