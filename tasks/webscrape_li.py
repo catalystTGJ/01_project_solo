@@ -25,7 +25,7 @@ def linkedin_search(URL, limit=0):
     )
 
     options = Options()
-    options.headless = True
+    options.headless = False
     options.add_argument("--window-size=1920,1080")
     search_driver = webdriver.Chrome('/usr/local/bin/chromedriver', options=options)
     #search_driver = webdriver.Chrome('/usr/local/bin/chromedriver')
